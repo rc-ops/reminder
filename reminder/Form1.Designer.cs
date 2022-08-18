@@ -1,4 +1,4 @@
-﻿namespace reminder
+﻿namespace remindertimer
 {
     partial class Form1
     {

@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace reminder
+namespace remindertimer
 {
     public partial class Form1 : Form
     {

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace reminder.Properties
+namespace remindertimer.Properties
 {
 
 
