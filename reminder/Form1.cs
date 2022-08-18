@@ -105,12 +105,6 @@ namespace remindertimer
             }
         }
 
-        private void notification(int Interval)
-        {
-            timer1.Interval = Interval;
-
-        }
-
         private void btnStart_Click(object sender, EventArgs e)
         {
             if (minimizeToTrayToolStripMenuItem.Checked)
@@ -125,6 +119,6 @@ namespace remindertimer
             notifyIcon1.Visible = false;
             this.WindowState = FormWindowState.Normal;
         }
-    }
 
+}
 }
