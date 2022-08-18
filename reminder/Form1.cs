@@ -12,8 +12,10 @@ namespace remindertimer
 {
     public partial class Form1 : Form
     {
-        private int time = 0;
+        private int specifiedTime = 0;
         private Boolean timeChosen = false;
+        private String finishMessage = "Time's up!";
+
         public Form1()
         {
             InitializeComponent();
@@ -21,8 +23,8 @@ namespace remindertimer
 
         private void resetEverything()
         {
-            trackbarTime.Value = this.time = 0;
-            lblTime.Text = this.time.ToString();
+            trackbarTime.Value = specifiedTime = 0;
+            lblTime.Text = specifiedTime.ToString();
             minimizeToTrayToolStripMenuItem.Checked = true;
             radioHours.Checked = true;
         }
@@ -34,30 +36,33 @@ namespace remindertimer
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            if (trackbarTime.Value == 0)
+            if (this.specifiedTime == 0)
             {
                 lblTime.Visible = false;
                 this.timeChosen = false;
-            }
+            } 
         }
 
         private void trackbarTime_Scroll(object sender, EventArgs e)
         {
-            this.time = trackbarTime.Value;
+            this.specifiedTime = trackbarTime.Value;
 
-            if (radioHours.Checked && this.time != 0)
+            if (radioHours.Checked && specifiedTime != 0)
             {
-                lblTime.Visible = this.timeChosen = true;
-                lblTime.Text = this.time.ToString() + " hours";
+                lblTime.Visible = true;
+                this.timeChosen = true;
+                lblTime.Text = specifiedTime.ToString() + " hours";
             }
-            else if (radioMinutes.Checked && this.time != 0)
+            else if (radioMinutes.Checked && specifiedTime != 0)
             {
-                lblTime.Visible = this.timeChosen = true;
-                lblTime.Text = this.time.ToString() + " minutes";
+                lblTime.Visible = true;
+                this.timeChosen = true;
+                lblTime.Text = specifiedTime.ToString() + " minutes";
             }
             else
             {
                 lblTime.Visible = false;
+                timeChosen = false;
             }
         }
 
@@ -65,7 +70,7 @@ namespace remindertimer
         {
             if (radioHours.Checked)
             {
-                lblTime.Text = this.time.ToString() + " hours";
+                lblTime.Text = specifiedTime.ToString() + " hours";
             }
         }
 
@@ -73,7 +78,7 @@ namespace remindertimer
         {
             if (radioMinutes.Checked)
             {
-                lblTime.Text = this.time.ToString() + " minutes";
+                lblTime.Text = specifiedTime.ToString() + " minutes";
             }
         }
 
@@ -81,21 +86,21 @@ namespace remindertimer
         {
             if (lblTime.Text == "0")
             {
-                lblTime.Visible = this.timeChosen = false;
+                lblTime.Visible = timeChosen = false;
             }
         }
 
         private void Form1_Resize(object sender, EventArgs e)
         {
-            if (this.WindowState == FormWindowState.Minimized && minimizeToTrayToolStripMenuItem.Checked && this.timeChosen)
+            if (WindowState == FormWindowState.Minimized && minimizeToTrayToolStripMenuItem.Checked && timer1.Enabled)
             {
                 ShowInTaskbar = false;
                 notifyIcon1.Visible = true;
                 notifyIcon1.BalloonTipTitle = "Started";
-                notifyIcon1.BalloonTipText = "Application minimized with..."; // Editar isso aqui
-                notifyIcon1.ShowBalloonTip(1000);
+                notifyIcon1.BalloonTipText = "The time is running!";
+                notifyIcon1.ShowBalloonTip(30);
             }
-            else if (this.WindowState == FormWindowState.Minimized && minimizeToTrayToolStripMenuItem.Checked && !this.timeChosen)
+            else if (WindowState == FormWindowState.Minimized && minimizeToTrayToolStripMenuItem.Checked && !timer1.Enabled)
             {
                 ShowInTaskbar = false;
                 notifyIcon1.Visible = true;
@@ -107,18 +112,85 @@ namespace remindertimer
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            if (minimizeToTrayToolStripMenuItem.Checked)
+            if (timeChosen && !timer1.Enabled)
             {
-                this.WindowState = FormWindowState.Minimized;
+                startTimer();
             }
+            else
+            {
+                stopTimer(1);
+            }
+        }
+
+        private void startTimer()
+        {
+            btnStart.Text = "STOP";
+            trackbarTime.Enabled = false;
+
+            if (radioHours.Checked)
+            {
+                timer1.Interval = specifiedTime * 3600000;
+                timer1.Start();
+            }
+            else
+            {
+                timer1.Interval = specifiedTime * 60000;
+                timer1.Start();
+            }
+        }
+
+        private void stopTimer(int state)
+        {
+            /* States
+             * 1 - Stopped by the user
+             * 2 - Stopped by the timer itself
+            */
+
+            switch (state)
+            {
+                case 1:
+                    stoppedUser();
+                    break;
+                case 2:
+                    stoppedItself();
+                    break;
+            }
+
+            void stoppedUser() {
+                if (!timeChosen)
+                {
+                    MessageBox.Show("No time was set.", "Reminder", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    btnStart.Text = "START";
+                    timer1.Stop();
+                    MessageBox.Show("Timer stopped.", "Reminder", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    trackbarTime.Enabled = true;
+                }
+            }
+
+            void stoppedItself()
+            {
+                btnStart.Text = "START";
+                timer1.Stop();
+                trackbarTime.Enabled = true;
+            }
+
         }
 
         private void notifyIcon1_DoubleClick(object sender, EventArgs e)
         {
             ShowInTaskbar = true;
             notifyIcon1.Visible = false;
-            this.WindowState = FormWindowState.Normal;
+            WindowState = FormWindowState.Normal;
         }
 
-}
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            MessageBox.Show(finishMessage, "Reminder", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            WindowState = FormWindowState.Normal;
+            stopTimer(2);
+        }
+    }
 }
