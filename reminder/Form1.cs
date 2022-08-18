@@ -126,6 +126,7 @@ namespace remindertimer
         {
             btnStart.Text = "STOP";
             trackbarTime.Enabled = false;
+            resetToolStripMenuItem.Enabled = false;
 
             if (radioHours.Checked)
             {
@@ -146,6 +147,7 @@ namespace remindertimer
              * 2 - Stopped by the timer itself
             */
 
+            resetToolStripMenuItem.Enabled = true;
             switch (state)
             {
                 case 1:
