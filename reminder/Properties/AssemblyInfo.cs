@@ -5,8 +5,8 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Reminder")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Reminder Timer")]
+[assembly: AssemblyDescription("A simple reminder and timer written in C#")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Reminder")]
