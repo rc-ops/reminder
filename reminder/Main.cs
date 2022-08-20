@@ -4,19 +4,20 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace remindertimer
 {
-    public partial class Form1 : Form
+    public partial class Main : Form
     {
         private int specifiedTime = 0;
         private Boolean timeChosen = false;
         private String finishMessage = "Time's up!";
 
-        public Form1()
+        public Main()
         {
             InitializeComponent();
         }
@@ -188,11 +189,37 @@ namespace remindertimer
             WindowState = FormWindowState.Normal;
         }
 
+        private void playNotificationSound()
+        {
+            try
+            {
+                SoundPlayer simpleSound = new SoundPlayer(@"c:\Windows\Media\chimes.wav");
+                simpleSound.Play();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Sound file not found");
+            }
+            
+        }
+
         private void timer1_Tick(object sender, EventArgs e)
         {
+            playNotificationSound();    
             MessageBox.Show(finishMessage, "Reminder", MessageBoxButtons.OK, MessageBoxIcon.Information);
             WindowState = FormWindowState.Normal;
             stopTimer(2);
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            About about = new About();
+            about.Show();
         }
     }
 }

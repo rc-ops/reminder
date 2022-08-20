@@ -6,6 +6,8 @@
 - [x] Make a initial GUI;
 - [x] Minimize to the systemtray and show a notification after doing so;
 - [x] Reset function;
-- [ ] Abiliy to save current settings;
 - [x] Make the timer work;
-- [ ] Add to-do features;
+- [x] Adds notification sound;
+- [ ] About window;
+- [ ] Show user's custom message;
+- [ ] Custom notification sound;

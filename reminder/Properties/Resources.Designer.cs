@@ -59,5 +59,15 @@ namespace remindertimer.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap identicon_rc_ops {
+            get {
+                object obj = ResourceManager.GetObject("identicon-rc-ops", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }
