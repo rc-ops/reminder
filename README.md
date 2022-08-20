@@ -8,6 +8,6 @@
 - [x] Reset function;
 - [x] Make the timer work;
 - [x] Adds notification sound;
-- [ ] About window;
+- [x] About window;
 - [ ] Show user's custom message;
 - [ ] Custom notification sound;
